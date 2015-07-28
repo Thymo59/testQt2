@@ -1,0 +1,243 @@
+#include"Villageoi.h"
+#include"Ville.h"
+#include <iostream>
+#include<string>
+#include<ctime>
+#include<cstdlib>
+#include<random>
+#include<vector>
+#include <array>
+
+using namespace std;
+default_random_engine generator;
+Villageoi::Villageoi(int i) : m_age(0), m_estMarie(0), m_nbEnfant(0), m_estVivant(1) , m_faim(0) , m_force(0) ,m_sante(1) , m_travail(0), m_intel(0)
+{
+
+array<double,7> intervals {0, 20,30,40, 45 ,70 ,80};
+array<double,7> weights {10, 10, 15,50, 100,100,10};
+piecewise_linear_distribution<double>
+distribution (intervals.begin(),intervals.end(),weights.begin());
+
+  int rand1 = rand() % 100;
+    if (rand1 > 50)
+    {
+      m_estFemme=0;
+    }
+    else
+        {
+        m_estFemme=1;
+        }
+int rand2(distribution(generator));
+    m_espVie=rand2;
+    m_nom="Villageoi ";
+    char iChar[4];
+    sprintf(iChar,"%d ",i+1);
+    m_nom+=iChar;
+    m_conjoint=0;
+    m_famille=0;
+
+}
+
+void Villageoi::direInfo()
+{
+    cout << "Je suis " << m_nom << endl;
+    cout << "j'ai " << m_age << " an(s)" << endl;
+    cout << "Force " << m_force << endl;
+    cout << "Intel " << m_intel << endl;
+    cout << "Travail " << m_travail << endl;
+    cout << "je suis de Vivant: " << m_estVivant << endl;
+    cout << "je suis de sex: " << m_estFemme << endl;
+    cout << "je suis marie(e) :" << m_estMarie << endl;
+    cout << "j'ai " << m_nbEnfant << " enfant(s)" << endl;
+    cout << "j'ai une espVie= " << m_espVie <<  endl;
+    cout << endl;
+}
+
+void Villageoi::ecrireInfo(ofstream &flux)
+{
+    flux << "Je suis " << m_nom << endl;
+    flux << "j'ai " << m_age << " an(s)" << endl;
+    flux << "je suis de Vivant: " << m_estVivant << endl;
+    flux << "je suis de sex: " << m_estFemme << endl;
+    flux << "je suis marie(e) :" << m_estMarie << endl;
+    flux << "j'ai " << m_nbEnfant << " enfant(s)" << endl;
+    flux << "j'ai une espVie= " << m_espVie <<  endl;
+    cout << endl;
+
+}
+int Villageoi::age()
+{
+    return m_age;
+}
+
+bool Villageoi::estFemme()
+{
+    return m_estFemme;
+}
+
+bool Villageoi::estVivant()
+{
+    return m_estVivant;
+}
+
+bool Villageoi::estMarie()
+{
+ return m_estMarie;
+}
+bool Villageoi::testMort()
+{
+
+    if (m_age>m_espVie || m_faim>7)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+void Villageoi::mort()
+{
+ m_estVivant=0;
+}
+
+bool Villageoi::testNaissance()
+{
+
+
+    int nbRand = rand() % 100;
+
+
+    if ( m_estFemme==1 && m_estMarie==1 && m_age<60)
+    {
+        if (nbRand>50+(m_age-18)*2)
+        {
+            return 1;
+        }
+            else
+        {
+            return 0;
+        }
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+void Villageoi::naissance()
+{
+    m_nbEnfant++;
+}
+
+bool Villageoi::testMarriage(Villageoi &cible)
+{
+    bool cibleEstFemme(cible.estFemme());
+    bool cibleEstMarie(cible.estMarie());
+    int cibleAge(cible.age());
+    if (m_estFemme!=cibleEstFemme && m_age>18 && cibleAge>18 && m_estMarie==0 && cibleEstMarie==0)
+    {
+            return 1;
+    }
+        else
+    {
+        return 0;
+    }
+}
+void Villageoi::marriage(Villageoi* cible)
+{
+    m_estMarie=1;
+    cible->marriage2(this);
+    m_conjoint=cible;
+}
+
+void Villageoi::marriage2(Villageoi* source)
+{
+    m_estMarie=1;
+    m_conjoint=source;
+}
+
+void Villageoi::ageIncr()
+{
+    m_age++;
+    m_faim++;
+    if(m_age==18)
+    {
+        m_force=5;
+        m_travail=1;
+    }
+    else if(m_age>45)
+    {
+        int tmp(m_force--);
+        if(tmp>0)
+        {
+        m_force=tmp;
+        }  else{ m_force=0;}
+
+
+    }else{}
+}
+
+void Villageoi::travail(Ville &cible)
+{
+
+if (m_travail=1)
+{
+    cible.vilProd((m_force)*m_sante);
+    m_force++;
+}
+else{}
+
+
+}
+
+
+int Villageoi::nbEnfant()
+{
+   return m_nbEnfant;
+}
+
+string Villageoi::nom()
+{
+     return m_nom;
+}
+
+void Villageoi::mange(Ville &cible)
+{
+
+    if(m_age>18)
+    {
+            if(cible.vilMange(10))
+            {
+                m_faim=-1;
+
+            }
+
+            else{}
+    }
+    else
+    {
+        if(cible.vilMange(5)){m_faim=-1; }
+        else{}
+
+    }
+
+}
+
+void Villageoi::plusMarie()
+{
+    m_estMarie=0;
+    m_conjoint->plusMarie2();
+
+}
+
+void Villageoi::plusMarie2()
+{
+    m_estMarie=0;
+}
+
+void Villageoi::setFamille(Famille* famille)
+{
+    m_famille = famille;
+}
