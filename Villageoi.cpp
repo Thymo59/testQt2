@@ -7,6 +7,7 @@
 #include<random>
 #include<vector>
 #include <array>
+#include<QDebug>
 
 using namespace std;
 default_random_engine generator;
@@ -36,36 +37,10 @@ int rand2(distribution(generator));
     m_conjoint=0;
     m_maison=0;
 
+    qDebug()<< "creation Villageoi" ;
 
 }
 
-void Villageoi::direInfo()
-{
-    cout << "Je suis " << m_nom << endl;
-    cout << "j'ai " << m_age << " an(s)" << endl;
-    cout << "Force " << m_force << endl;
-    cout << "Intel " << m_intel << endl;
-    cout << "Travail " << m_travail << endl;
-    cout << "je suis de Vivant: " << m_estVivant << endl;
-    cout << "je suis de sex: " << m_estFemme << endl;
-    cout << "je suis marie(e) :" << m_estMarie << endl;
-    cout << "j'ai " << m_nbEnfant << " enfant(s)" << endl;
-    cout << "j'ai une espVie= " << m_espVie <<  endl;
-    cout << endl;
-}
-
-void Villageoi::ecrireInfo(ofstream &flux)
-{
-    flux << "Je suis " << m_nom << endl;
-    flux << "j'ai " << m_age << " an(s)" << endl;
-    flux << "je suis de Vivant: " << m_estVivant << endl;
-    flux << "je suis de sex: " << m_estFemme << endl;
-    flux << "je suis marie(e) :" << m_estMarie << endl;
-    flux << "j'ai " << m_nbEnfant << " enfant(s)" << endl;
-    flux << "j'ai une espVie= " << m_espVie <<  endl;
-    cout << endl;
-
-}
 int Villageoi::age()
 {
     return m_age;

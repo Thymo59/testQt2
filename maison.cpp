@@ -8,13 +8,17 @@
 #include<random>
 #include<vector>
 #include <array>
+#include<QDebug>
 
 Maison::Maison(Villageoi* parent1, Villageoi* parent2, int posX, int posY)
 {
    m_habitants.push_back(parent1);
+   parent1->setMaison(this);
    m_habitants.push_back(parent2);
+   parent2->setMaison(this);
    m_posX=posX;
    m_posY=posY;
+   qDebug() << "nouvelle Maison";
 }
 
 Maison::Maison(): m_posX(0), m_posY(0)
@@ -25,17 +29,25 @@ Maison::Maison(): m_posX(0), m_posY(0)
 void Maison::addEnfant(Villageoi *enfant)
 {
  m_habitants.push_back(enfant);
+ enfant->setMaison(this);
+ qDebug() << "addEnfant";
 }
 
 void Maison::removeHabitant(Villageoi *habitant)
 {
+ qDebug() << "removeHabitant";
     for(int i(0);i<m_habitants.size();i++)
     {
+
        if(m_habitants[i] == habitant)
        {
+
+           m_habitants[i]->setMaison(0);
            m_habitants.erase(m_habitants.begin()+i);
        }
-       else{}
+       else
+       {
+       }
     }
 }
 

@@ -6,11 +6,13 @@
 #include<vector>
 #include<fstream>
 #include<iostream>
+#include<QDebug>
 
 using namespace std;
 
 Ville::Ville(int nbVil, string nom) : QWidget(),m_nbMaison(1), m_age(0),m_nbVil(0), m_pourCentMarie(0), m_enfantParFemme(0), m_nbAdult(0), m_nbEnfant(0),m_nbHomme(0), m_nbFemme(0), m_nbMarie(0) , m_nourriture(50000), m_nom(nom)
 {
+
     Maison *maison0(0);
     maison0 = new Maison();
     m_maisons.push_back(maison0);
@@ -19,6 +21,7 @@ Ville::Ville(int nbVil, string nom) : QWidget(),m_nbMaison(1), m_age(0),m_nbVil(
     {
         this->newVil(i);
         m_maisons[0]->addEnfant(m_villageois.back());
+
     }
 }
 
@@ -34,6 +37,7 @@ void Ville::newVil(int i)
 
 void Ville::mortVil(int i)
 {
+
     m_nbVil-=1;
     if(m_villageois[i]->age()>18*12)
     {
@@ -58,52 +62,6 @@ void Ville::mortVil(int i)
 
 
 
-}
-
-void Ville::direInfoVil()
-{
-    cout << endl;
-   cout << "j'ai " << m_nbVil << " Villageois :" << endl;
-   for (int i(0);i<m_nbVil;i++)
-    {
-        cout << endl;
-        m_villageois[i]->direInfo();
-    }
-
-}
-
-void Ville::direInfo()
-{
-   cout << endl;
-   cout << "Ville de: " << m_nbVil << " Villageois" << endl;
-   cout << "dont " << m_nbFemme << " Femmes et " << (m_nbAdult-m_nbFemme) << " Hommes ainsi que " << (m_nbVil-m_nbAdult) <<" enfants" << endl;
-
-   cout << m_pourCentMarie << " \% des Villageois adultes sont marié" << endl;
-   cout << "Il y a " << m_enfantParFemme << " enfants par Femme." << endl;
-   cout << "nouriture en stock :  "<< m_nourriture << endl;
-   cout << endl;
-
-}
-
-void Ville::ecrireInfo(ofstream &flux)
-{
-   flux << "Ville de: " << m_nbVil << " Villageois" << endl;
-   flux << "dont " << m_nbFemme << " Femmes et " << (m_nbAdult-m_nbFemme) << " Hommes ainsi que " << (m_nbVil-m_nbAdult) <<" enfants" << endl;
-
-   flux << m_pourCentMarie << " \% des Villageois adultes sont marié" << endl;
-   flux << "Il y a " << m_enfantParFemme << " enfants par Femme." << endl;
-
-}
-
-
-void Ville::ecrireInfoVil(ofstream &flux)
-{
-
-       for (int i(0);i<m_villageois.size();i++)
-    {
-
-        m_villageois[i]->ecrireInfo(flux);
-    }
 }
 
 int Ville::nbVil()
@@ -133,10 +91,8 @@ void Ville::upDate()
         m_villageois[i]->mange(*this);
         if(m_villageois[i]->testMort())
         {
-            m_villageois[i]->mort();
-            this->mortVil(i);
-            //cout << "Mort" << endl;
-
+            qDebug() << "mort villageoi" << i;
+            this->mortVil(i);    
         }
         else{
     uniform_int_distribution<int> distribution(0,m_villageois.size());
@@ -159,6 +115,7 @@ void Ville::upDate()
     m_villageois[i]->travail(*this);
     if(m_villageois[i]->testMarriage(*m_villageois[rand1]))
     {
+        qDebug() << "Marriage" << i << rand1 ;
         m_villageois[i]->marriage(m_villageois[rand1]);
         m_nbMarie+=2;
 
@@ -166,20 +123,15 @@ void Ville::upDate()
         ptrMaison = new Maison(m_villageois[rand1],m_villageois[i],0,0);
         m_maisons.push_back(ptrMaison);
         m_nbMaison=m_maisons.size();
-
-       // cout << "marriage" << endl;
     }
     else{}
 
     if(m_villageois[i]->testNaissance())
     {
        m_villageois[i]->naissance();
-       this->newVil(m_nbVil+1);
+       qDebug() << "Naissance" << i ;
+       this->newVil(m_villageois.size()+1);
        (m_villageois[i]->getMaison())->addEnfant(m_villageois.back());
-        bool sex(m_villageois[m_nbVil-1]->estFemme());
-      // cout << m_villageois[i].nom()<< "donne naissance, sex : " << sex << endl;
-
-
     }
     else{}
 
