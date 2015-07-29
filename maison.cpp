@@ -10,7 +10,7 @@
 #include <array>
 #include<QDebug>
 
-Maison::Maison(Villageoi* parent1, Villageoi* parent2, int posX, int posY)
+Maison::Maison(Ville* ville,Villageoi* parent1, Villageoi* parent2, int posX, int posY)
 {
    m_habitants.push_back(parent1);
    parent1->setMaison(this);
@@ -18,12 +18,15 @@ Maison::Maison(Villageoi* parent1, Villageoi* parent2, int posX, int posY)
    parent2->setMaison(this);
    m_posX=posX;
    m_posY=posY;
+   ville->consommeBois(5);
    qDebug() << "nouvelle Maison";
+
 }
 
-Maison::Maison(): m_posX(0), m_posY(0)
+Maison::Maison(Ville* ville): m_posX(0), m_posY(0)
 {
-
+    ville->consommeBois(5);
+    qDebug() << "nouvelle Maison";
 }
 
 void Maison::addEnfant(Villageoi *enfant)

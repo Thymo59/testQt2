@@ -10,11 +10,11 @@
 
 using namespace std;
 
-Ville::Ville(int nbVil, string nom) : QWidget(),m_nbMaison(1), m_age(0),m_nbVil(0), m_pourCentMarie(0), m_enfantParFemme(0), m_nbAdult(0), m_nbEnfant(0),m_nbHomme(0), m_nbFemme(0), m_nbMarie(0) , m_nourriture(50000), m_nom(nom)
+Ville::Ville(int nbVil, string nom) : QWidget() ,m_bois (500),m_nbMaison(1), m_age(0),m_nbVil(0), m_pourCentMarie(0), m_enfantParFemme(0), m_nbAdult(0), m_nbEnfant(0),m_nbHomme(0), m_nbFemme(0), m_nbMarie(0) , m_nourriture(20000), m_nom(nom)
 {
 
     Maison *maison0(0);
-    maison0 = new Maison();
+    maison0 = new Maison(this);
     m_maisons.push_back(maison0);
     m_nbMaison=m_maisons.size();
     for (int i(1);i<nbVil+1;i++)
@@ -82,6 +82,7 @@ void Ville::anIncr()
 
 void Ville::upDate()
 {
+  qDebug() << "début update" << m_age;
   default_random_engine generator;
     int nbenfant_Tmp(0);
 
@@ -120,7 +121,7 @@ void Ville::upDate()
         m_nbMarie+=2;
 
         Maison *ptrMaison(0);
-        ptrMaison = new Maison(m_villageois[rand1],m_villageois[i],0,0);
+        ptrMaison = new Maison(this,m_villageois[rand1],m_villageois[i],0,0);
         m_maisons.push_back(ptrMaison);
         m_nbMaison=m_maisons.size();
     }
@@ -156,6 +157,9 @@ void Ville::upDate()
     emit nbAdultModif(m_nbAdult);
     emit nbMaisonModif(m_nbMaison);
     emit ageModif(m_age/12);
+    emit nbBoisModif(m_bois);
+    emit nbNourritureModif(m_nourriture);
+    qDebug() << "fin update";
 }
 
 bool Ville::vilMange(int a)
@@ -199,6 +203,14 @@ int Ville::nbEnfant()
     return m_nbEnfant;
 }
 
+int Ville::nbBois()
+{
+    return m_bois;
+}
+int Ville::nbNourriture()
+{
+    return m_nourriture;
+}
 
 int Ville::nbMaison()
 {
@@ -223,4 +235,9 @@ int Ville::age()
 Villageoi* Ville::villageoi(int i)
 {
     return m_villageois[i];
+}
+
+void Ville::consommeBois(int a)
+{
+    m_bois = m_bois-a;
 }

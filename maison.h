@@ -11,12 +11,13 @@
 #include"Villageoi.h"
 #include<vector>
 class Villageoi;
+class Ville;
 
 class Maison
 {
 public:
-    Maison();
-    Maison(Villageoi* parent1, Villageoi* parent2, int posX, int posY);
+    Maison(Ville* ville);
+    Maison(Ville* ville,Villageoi* parent1, Villageoi* parent2, int posX, int posY);
     void addEnfant(Villageoi* enfant);
     void removeHabitant(Villageoi* habitant);
 
