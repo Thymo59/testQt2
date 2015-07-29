@@ -37,6 +37,7 @@ private:
     QLabel *m_labNomQ;
     QLineEdit *m_editAgeIncr;
     QPushButton *m_boutonAgeIncr;
+    QPushButton *m_boutonStop;
     QString m_strNbFemme;
     QLabel *m_labNbFemme;
     QString m_strNbHomme;

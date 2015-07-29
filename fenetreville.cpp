@@ -58,13 +58,13 @@ FenetreVille::FenetreVille(int NbVil , std::string nom ) : QWidget()
     m_formLayout->addRow("-enfants :",m_labNbEnfant);
     m_formLayout->addRow("Age de la ville: ", m_labAge);
 
-    m_formLayout->addRow("Vitesse : ", m_editAgeIncr);
+    m_formLayout->addRow("Tempo (ms): ", m_editAgeIncr);
     m_boutonAgeIncr = new QPushButton("Go!");
-
+    m_boutonStop = new QPushButton("Stop!");
     m_vBoxLayout = new QVBoxLayout(this);
     m_vBoxLayout->addLayout(m_formLayout);
     m_vBoxLayout->addWidget(m_boutonAgeIncr);
-
+    m_vBoxLayout->addWidget(m_boutonStop);
 
     QObject::connect(m_boutonAgeIncr,SIGNAL(clicked()),this,SLOT(goIncr()));
     QObject::connect(m_ville,SIGNAL(nbVilModif(int)),m_labNbVil,SLOT(setNum(int)));
@@ -86,18 +86,14 @@ void FenetreVille::goIncr()
 
     QTimer *timer = new QTimer(this);
     QObject::connect(timer,SIGNAL(timeout()),this,SLOT(ageIncr()));
-    timer->start(intNbIncr*1000);
+    timer->start(intNbIncr);
+    QObject::connect(m_boutonStop,SIGNAL(clicked()),timer,SLOT(stop()));
+
 }
 
 void FenetreVille::ageIncr()
-{
-
-
-        while(m_ville->nbVil()!=0)
-        {
+{       
             m_ville->anIncr();
-            m_ville->upDate();    
-        }
-
+            m_ville->upDate();        
 }
 
