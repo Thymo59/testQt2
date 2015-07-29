@@ -26,7 +26,7 @@ class Ville : public QWidget
         void anIncr();
         void upDate();
 
-
+        void consommeBois(int a);
 
         void direInfoVil();
         void direInfo();
@@ -39,6 +39,8 @@ class Ville : public QWidget
 
        int nbVil();
        int nbMaison();
+       int nbBois();
+       int nbNourriture();
        int nbFemme();
        int nbHomme();
        int nbEnfant();
@@ -58,6 +60,8 @@ signals:
        void nbEnfantModif(int nbEnfant);
        void nbAdultModif(int nbAdult);
        void nbMaisonModif(int nbMaison);
+       void nbBoisModif(int nbBois);
+       void nbNourritureModif(int nbNourriture);
     private:
 
         std::string m_nom;
@@ -70,6 +74,7 @@ signals:
         int m_nbEnfant;
         int m_nbMarie;
         int m_nourriture;
+        int m_bois;
         std::vector<Maison*> m_maisons;
         std::vector<Villageoi*> m_villageois;
         double m_pourCentMarie;

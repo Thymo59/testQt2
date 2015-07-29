@@ -11,7 +11,7 @@
 
 using namespace std;
 default_random_engine generator;
-Villageoi::Villageoi(int i) : m_age(0), m_estMarie(0), m_nbEnfant(0), m_estVivant(1) , m_faim(0) , m_force(0) ,m_sante(1) , m_travail(0), m_intel(0)
+Villageoi::Villageoi(int i) : m_expForce(0), m_expIntel(0),m_age(0), m_estMarie(0), m_nbEnfant(0), m_estVivant(1) , m_faim(0) , m_force(0) ,m_sante(1) , m_travail(0), m_intel(0)
 {
 
 array<double,7> intervals {0, 20*12,30*12,40*12, 45*12 ,70*12 ,80*12};
@@ -88,7 +88,7 @@ bool Villageoi::testNaissance()
 
     if ( m_estFemme==1 && m_estMarie==1 && m_age<60*12)
     {
-        if (nbRand>50+(m_age-18*12)*2)
+        if (nbRand>50+(m_age-18*12)+(m_nbEnfant*5))
         {
             return 1;
         }
@@ -146,7 +146,8 @@ void Villageoi::ageIncr()
     m_faim++;
     if(m_age==18*12)
     {
-        m_force=5;
+        m_force=10;
+        m_intel=10;
         m_travail=1;
     }
     else if(m_age>45*12)
@@ -167,10 +168,9 @@ void Villageoi::travail(Ville &cible)
 if (m_travail=1)
 {
     cible.vilProd((m_force)*m_sante);
-    m_force++;
+    m_expForce++;
 }
 else{}
-
 
 }
 
@@ -227,4 +227,18 @@ void Villageoi::setMaison(Maison* maison)
 Maison* Villageoi::getMaison()
 {
     return m_maison;
+}
+
+void Villageoi::levelUp()
+{
+    if(m_expForce>24)
+    {
+     m_force++;
+     m_expForce=0;
+    }
+    if(m_expIntel>24)
+    {
+     m_intel++;
+     m_expIntel=0;
+    }
 }

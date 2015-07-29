@@ -23,6 +23,7 @@ public:
 public slots:
 
     void ageIncr();
+    void goIncr();
 
 private:
 
@@ -44,7 +45,10 @@ private:
     QLabel *m_labNbEnfant;
     QString m_strNbAdult;
     QLabel *m_labNbAdult;
-
+    QString m_strNbNourriture;
+    QLabel *m_labNbNourriture;
+    QString m_strNbBois;
+    QLabel *m_labNbBois;
     QString m_strNbMaison;
     QLabel *m_labNbMaison;
 };

@@ -47,6 +47,7 @@ public:
     void plusMarie2();
     void setMaison(Maison* maison);
     Maison *getMaison();
+    void levelUp();
 
 private:
 
@@ -60,6 +61,8 @@ private:
     std::string m_nom;
     int m_force;
     int m_intel;
+    int m_expForce;
+    int m_expIntel;
     int m_sante;
     int m_travail;
     Villageoi *m_conjoint;

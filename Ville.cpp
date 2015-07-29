@@ -97,6 +97,7 @@ void Ville::upDate()
         }
         else{
     uniform_int_distribution<int> distribution(0,m_villageois.size());
+        m_villageois[i]->levelUp();
 
         if(m_villageois[i]->age()==18*12)
         {
