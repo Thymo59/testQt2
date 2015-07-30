@@ -144,8 +144,18 @@ void Ville::upDate()
 
 
     }
+
+    int j(0);
+    while (j<m_constructions.size())
+    {
+        m_constructions[j]->upDate();
+        j++;
+    }
+
+
     int nbHomme(m_nbAdult-m_nbFemme);
     int nbEnfant(m_nbVil-m_nbAdult);
+
     emit nbVilModif(m_nbVil);
     emit nbFemmeModif(m_nbFemme);
     emit nbHommeModif(nbHomme);
@@ -155,6 +165,7 @@ void Ville::upDate()
     emit ageModif(m_age/12);
     emit nbBoisModif(m_bois);
     emit nbNourritureModif(m_nourriture);
+
     qDebug() << "fin update";
 }
 
@@ -245,4 +256,21 @@ void Ville::addMaison(Villageoi* parent1,Villageoi* parent2,int posX,int posY)
     ptrMaison = new Maison(this,parent1,parent2, posX , posY);
     m_maisons.push_back(ptrMaison);
     m_nbMaison=m_maisons.size();
+}
+void Ville::removeConstruction(Maison *maison)
+{
+for(int i(0);i<m_constructions.size();i++)
+{
+
+   if(m_constructions[i] == maison)
+   {
+       m_constructions.erase(m_constructions.begin()+i);
+   }
+   else{}
+}
+}
+
+void Ville::addConstruction(Maison *maison)
+{
+    m_constructions.push_back(maison);
 }

@@ -26,6 +26,8 @@ class Ville : public QWidget
         void anIncr();
         void upDate();
         void addMaison(Villageoi* parent1,Villageoi* parent,int posX,int posY);
+        void addConstruction(Maison* maison);
+        void removeConstruction(Maison* maison);
         void consommeBois(int a);
 
         void direInfoVil();
@@ -77,6 +79,7 @@ signals:
         int m_bois;
         std::vector<Maison*> m_maisons;
         std::vector<Villageoi*> m_villageois;
+        std::vector<Maison*> m_constructions;
         double m_pourCentMarie;
         double m_enfantParFemme;
 

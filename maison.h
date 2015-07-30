@@ -20,11 +20,14 @@ public:
     Maison(Ville* ville,Villageoi* parent1, Villageoi* parent2, int posX, int posY);
     void addEnfant(Villageoi* enfant);
     void removeHabitant(Villageoi* habitant);
+    void upDate();
 
 private:
+    Ville *m_ville;
     int m_posX;
     int m_posY;
     std::vector<Villageoi*> m_habitants;
+    int m_construction;
 };
 
 #endif // MAISON_H
