@@ -16,11 +16,11 @@ class Maison;
 class Villageoi
 {
 public:
-    Villageoi(int i);
+    Villageoi(int i,Ville* ville);
 
     bool testNaissance();
     void naissance();
-
+    void setEnceinte();
     bool testMort();
     void mort();
 
@@ -53,6 +53,7 @@ private:
 
     int m_age;
     int m_espVie;
+    int m_enceinte;
     bool m_estVivant;
     bool m_estFemme;
     bool m_estMarie;
@@ -67,6 +68,7 @@ private:
     int m_travail;
     Villageoi *m_conjoint;
     Maison *m_maison;
+    Ville *m_ville;
 
 };
 

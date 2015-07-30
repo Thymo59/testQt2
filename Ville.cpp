@@ -19,19 +19,18 @@ Ville::Ville(int nbVil, string nom) : QWidget() ,m_bois (500),m_nbMaison(1), m_a
     m_nbMaison=m_maisons.size();
     for (int i(1);i<nbVil+1;i++)
     {
-        this->newVil(i);
-        m_maisons[0]->addEnfant(m_villageois.back());
-
+        this->newVil(m_maisons[0]);
     }
 }
 
-void Ville::newVil(int i)
+void Ville::newVil(Maison* maison)
 {
         Villageoi *ptrVil(0);
-        ptrVil = new Villageoi(i);
+        ptrVil = new Villageoi(m_nbVil+1,this);
         m_villageois.push_back(ptrVil);
         m_nbEnfant++;
         m_nbVil=m_villageois.size();
+        maison->addEnfant(m_villageois.back());
 
 }
 
@@ -120,20 +119,16 @@ void Ville::upDate()
         qDebug() << "Marriage" << i << rand1 ;
         m_villageois[i]->marriage(m_villageois[rand1]);
         m_nbMarie+=2;
+        this->addMaison(m_villageois[rand1],m_villageois[i],0,0);
 
-        Maison *ptrMaison(0);
-        ptrMaison = new Maison(this,m_villageois[rand1],m_villageois[i],0,0);
-        m_maisons.push_back(ptrMaison);
-        m_nbMaison=m_maisons.size();
     }
     else{}
 
     if(m_villageois[i]->testNaissance())
     {
-       m_villageois[i]->naissance();
-       qDebug() << "Naissance" << i ;
-       this->newVil(m_villageois.size()+1);
-       (m_villageois[i]->getMaison())->addEnfant(m_villageois.back());
+       m_villageois[i]->setEnceinte();
+
+
     }
     else{}
 
@@ -241,4 +236,13 @@ Villageoi* Ville::villageoi(int i)
 void Ville::consommeBois(int a)
 {
     m_bois = m_bois-a;
+}
+
+void Ville::addMaison(Villageoi* parent1,Villageoi* parent2,int posX,int posY)
+{
+
+    Maison *ptrMaison(0);
+    ptrMaison = new Maison(this,parent1,parent2, posX , posY);
+    m_maisons.push_back(ptrMaison);
+    m_nbMaison=m_maisons.size();
 }

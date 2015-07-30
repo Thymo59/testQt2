@@ -21,11 +21,11 @@ class Ville : public QWidget
     public:
 
         Ville(int nbVil, std::string nom);
-        void newVil(int nVil);
+        void newVil(Maison* maison);
         void mortVil(int nVil);
         void anIncr();
         void upDate();
-
+        void addMaison(Villageoi* parent1,Villageoi* parent,int posX,int posY);
         void consommeBois(int a);
 
         void direInfoVil();

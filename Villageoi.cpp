@@ -11,9 +11,9 @@
 
 using namespace std;
 default_random_engine generator;
-Villageoi::Villageoi(int i) : m_expForce(0), m_expIntel(0),m_age(0), m_estMarie(0), m_nbEnfant(0), m_estVivant(1) , m_faim(0) , m_force(0) ,m_sante(1) , m_travail(0), m_intel(0)
+Villageoi::Villageoi(int i,Ville* ville) : m_enceinte(0), m_expForce(0), m_expIntel(0),m_age(0), m_estMarie(0), m_nbEnfant(0), m_estVivant(1) , m_faim(0) , m_force(0) ,m_sante(1) , m_travail(0), m_intel(0)
 {
-
+m_ville=ville;
 array<double,7> intervals {0, 20*12,30*12,40*12, 45*12 ,70*12 ,80*12};
 array<double,7> weights {10, 10, 15,50, 100,100,10};
 piecewise_linear_distribution<double>
@@ -37,7 +37,7 @@ int rand2(distribution(generator));
     m_conjoint=0;
     m_maison=0;
 
-    qDebug()<< "creation Villageoi" ;
+    qDebug()<< "creation" << QString(m_nom.c_str());;
 
 }
 
@@ -86,7 +86,7 @@ bool Villageoi::testNaissance()
     int nbRand = rand() % 100;
 
 
-    if ( m_estFemme==1 && m_estMarie==1 && m_age<60*12)
+    if (m_enceinte == 0 && m_estFemme==1 && m_estMarie==1 && m_age<60*12)
     {
         if (nbRand>50+(m_age-18*12)+(m_nbEnfant*5))
         {
@@ -105,7 +105,11 @@ bool Villageoi::testNaissance()
 
 void Villageoi::naissance()
 {
+
     m_nbEnfant++;
+    qDebug() << "naissance! mere:" << QString(m_nom.c_str());
+    m_ville->newVil(m_maison);
+
 }
 
 bool Villageoi::testMarriage(Villageoi &cible)
@@ -113,7 +117,7 @@ bool Villageoi::testMarriage(Villageoi &cible)
     bool cibleEstFemme(cible.estFemme());
     bool cibleEstMarie(cible.estMarie());
     int cibleAge(cible.age());
-    if (m_estFemme!=cibleEstFemme && m_age>18*12 && cibleAge>18*12 && m_estMarie==0 && cibleEstMarie==0)
+    if ( m_estFemme!=cibleEstFemme && m_age>18*12 && cibleAge>18*12 && m_estMarie==0 && cibleEstMarie==0)
     {
             return 1;
     }
@@ -158,6 +162,17 @@ void Villageoi::ageIncr()
         m_force=tmp;
         }  else{ m_force=0;}
 
+
+    }else{}
+
+    if (m_enceinte!=0)
+    {
+        m_enceinte++;
+        if( m_enceinte > 9)
+        {
+          this->naissance();
+            m_enceinte = 0;
+        }else{}
 
     }else{}
 }
@@ -241,4 +256,9 @@ void Villageoi::levelUp()
      m_intel++;
      m_expIntel=0;
     }
+}
+
+void Villageoi::setEnceinte()
+{
+    m_enceinte=1;
 }
