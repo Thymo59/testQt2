@@ -21,7 +21,7 @@ Maison::Maison(Ville* ville,Villageoi* parent1, Villageoi* parent2, int posX, in
    m_posX=posX;
    m_posY=posY;
    ville->consommeBois(5);
-   qDebug() << "nouvelle Maison";
+   qDebug() << "creation Maison";
 }
 
 Maison::Maison(Ville* ville): m_posX(0), m_posY(0), m_construction(0)
@@ -29,7 +29,7 @@ Maison::Maison(Ville* ville): m_posX(0), m_posY(0), m_construction(0)
     m_ville=ville;
     ville->addConstruction(this);
     ville->consommeBois(5);
-    qDebug() << "nouvelle Maison";
+    qDebug() << "creation Maison";
 }
 
 void Maison::addEnfant(Villageoi *enfant)
@@ -60,9 +60,10 @@ void Maison::removeHabitant(Villageoi *habitant)
 void Maison::upDate()
 {
     m_construction++;
-            if(m_construction>100)
+            if(m_construction>6)
     {
         m_ville->removeConstruction(this);
+        qDebug() << "fin Construction";
     }
 }
 
